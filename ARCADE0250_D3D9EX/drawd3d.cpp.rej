@@ -1,0 +1,56 @@
+--- src/osd/modules/render/drawd3d.cpp
++++ src/osd/modules/render/drawd3d.cpp
+@@ -861,8 +861,8 @@ void renderer_d3d9::update_presentation_parameters()
+ 	m_presentation.Windowed = !win->fullscreen() || win->win_has_menu();
+ 	m_presentation.EnableAutoDepthStencil = FALSE;
+ 	m_presentation.AutoDepthStencilFormat = D3DFMT_D16;
+-	m_presentation.Flags = 0;
+-	m_presentation.FullScreen_RefreshRateInHz = m_refresh;
++	m_presentation.Flags = D3DPRESENTFLAG_UNPRUNEDMODE;
++	m_presentation.FullScreen_RefreshRateInHz = win->fullscreen()?m_refresh : 0;
+ 	m_presentation.PresentationInterval = (video_config.framedelay == 0 &&
+ 		((video_config.triplebuf && win->fullscreen())
+ 		|| video_config.waitvsync
+@@ -1288,14 +1295,17 @@ int renderer_d3d9::device_test_cooperative()
+ int renderer_d3d9::restart()
+ {
+ 	// free all existing resources
+-	device_delete_resources();
++	if (m_shaders->enabled()) device_delete_resources();
+ 
+ 	// configure new video mode
+ 	pick_best_mode();
+ 	update_presentation_parameters();
+ 
++	auto win = assert_window();
++	D3DDISPLAYMODEEX *display_mode = win->fullscreen()? &m_display_mode : nullptr;
++
+ 	// reset the device
+-	HRESULT result = m_device->Reset(&m_presentation);
++	HRESULT result = m_device->ResetEx(&m_presentation, display_mode);
+ 	if (FAILED(result))
+ 	{
+ 		osd_printf_error("Unable to reset, result %08lX\n", result);
+@@ -1303,7 +1313,7 @@ int renderer_d3d9::restart()
+ 	}
+ 
+ 	// create the resources again
+-	device_create_resources();
++	if (m_shaders->enabled()) device_create_resources();
+ 
+ 	return 0;
+ }
+@@ -1447,6 +1461,13 @@ void renderer_d3d9::pick_best_mode()
+ 			m_height = m_switchres_mode->type & MODE_ROTATED? m_switchres_mode->width : m_switchres_mode->height;
+ 			m_refresh = (int)m_switchres_mode->refresh;
+ 			m_interlace = m_switchres_mode->interlace;
++
++			m_display_mode.Size = sizeof(D3DDISPLAYMODEEX);
++			m_display_mode.Width = m_width;
++			m_display_mode.Height = m_height;
++			m_display_mode.RefreshRate = m_refresh;
++			m_display_mode.Format = m_pixformat;
++			m_display_mode.ScanLineOrdering = m_interlace? D3DSCANLINEORDERING_INTERLACED : D3DSCANLINEORDERING_PROGRESSIVE;
+ 			return;
+ 		}
+ 	}
