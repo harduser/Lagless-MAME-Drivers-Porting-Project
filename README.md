@@ -3,3 +3,5 @@ I have found the "Shmupmame" project hasn't been updated for a very long while,S
 # WIP：
 psikyo's driver  
 gp9001's driver
+# License:
+The Whole Project is GNU-GPL Project and The code Should be compatible with the 3-Clause-BSD License
