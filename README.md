@@ -1,5 +1,5 @@
 # This is a Shmupmame's lagless drivers porting project！
-I have found the "Shmupmame" project hasn't been updated for a very long while,so I Ported it into the newest MAME,like "Groovymame" or "Arcade",used the C++17 standard(The old MAME code is written by C)
+I have found the "Shmupmame" project hasn't been updated for a very long while,so I ported it into the newest MAME,like "Groovymame" or "Arcade",used the C++17 standard(The old MAME code is written by C)
 # WIP：
 psikyo's lagless driver in C++   
 # License:
