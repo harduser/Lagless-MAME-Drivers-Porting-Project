@@ -3,4 +3,4 @@ I have found the "Shmupmame" project hasn't been updated for a very long while,s
 # WIP：
 psikyo's lagless driver in C++   
 # License:
-The Whole Project is GNU-GPL Project(as same as MAME,seemed GPLv2) and the code Should be compatible with the 3-Clause-BSD License
+The whole project is under the GNU-GPL license(as same as MAME,seemed GPLv2) and the code should be compatible with the 3-Clause-BSD License
