@@ -634,7 +634,7 @@ void gp9001vdp_device::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clip
 {
 	int clk = 0;
 	int clk_max = 432 * 262; // TODO : related to size of whole screen?
-	const u16 *source
+	const u16 *source;
 	if (m_sp.use_sprite_buffer) 
 	{
 		/** Shift sprite RAM buffers  ***  Used to fix sprite lag **/
